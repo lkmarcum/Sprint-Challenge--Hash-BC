@@ -9,11 +9,17 @@ from hashtables import (HashTable,
 def get_indices_of_item_weights(weights, length, limit):
     ht = HashTable(16)
 
-    """
-    YOUR CODE HERE
-    """
+    for i in range(0, length):
+        hash_table_insert(ht, weights[i], i)
 
-    return None
+    for i in range(0, length):
+        search_index = hash_table_retrieve(ht, limit - weights[i])
+        if search_index is not None:
+            if i > search_index:
+                return [i, search_index]
+            return [search_index, i]
+
+    # return None
 
 
 def print_answer(answer):
@@ -21,3 +27,6 @@ def print_answer(answer):
         print(str(answer[0] + " " + answer[1]))
     else:
         print("None")
+
+
+# print(get_indices_of_item_weights([4, 6, 10, 15, 16], 5, 21))
