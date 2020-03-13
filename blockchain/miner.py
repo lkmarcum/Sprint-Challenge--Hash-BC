@@ -8,6 +8,7 @@ from uuid import uuid4
 from timeit import default_timer as timer
 
 import random
+import string
 
 
 def proof_of_work(last_proof):
@@ -23,8 +24,20 @@ def proof_of_work(last_proof):
     start = timer()
 
     print("Searching for next proof")
-    proof = 0
-    #  TODO: Your code here
+    N = 16
+    # proof = ''.join(random.choices(
+    #     string.ascii_uppercase + string.digits, k=N))
+    proof = 64841523854132545372311984897613156356
+    while valid_proof(last_proof, proof) is False:
+        # proof = ''.join(random.choices(
+        #     string.ascii_uppercase + string.digits, k=N))
+        proof += 1
+        # r = requests.get(
+        #     "https://lambda-coin.herokuapp.com/api/last_proof")
+        # data = r.json()
+        # last_proof = data.get('proof')
+        # print(f'Last proof: {last_proof}')
+        # print(f'New proof: {proof}')
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
@@ -39,8 +52,12 @@ def valid_proof(last_hash, proof):
     IE:  last_hash: ...AE9123456, new hash 123456E88...
     """
 
-    # TODO: Your code here!
-    pass
+    prev = f'{last_hash}'.encode()
+    guess = f'{proof}'.encode()
+    prev_hash = hashlib.sha256(prev).hexdigest()
+    guess_hash = hashlib.sha256(guess).hexdigest()
+
+    return prev_hash[-6:] == guess_hash[:6]
 
 
 if __name__ == '__main__':
